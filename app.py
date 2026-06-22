@@ -24,6 +24,43 @@ ASSET_DIR = Path(__file__).resolve().parent / "assets"
 ORBIT_LOOP_PATH = ASSET_DIR / "orbit-view-loop.webp"
 ORBIT_VIDEO_PATH = ASSET_DIR / "orbit-background-2x-crossfade.mp4"
 
+SYSTEM_SECTION_RULES = [
+    ("mission_function", r"(任务和功能|任务需求|功能定义|功能分类|功能描述)"),
+    ("orbit_environment", r"(轨道|环境|入轨高度|运行轨道|轨道周期|光照|阴影|地影|受晒因子)"),
+    ("electrical_indicators", r"(电气技术指标|输出功率|母线电压|母线品质|火工品母线|抗扰|纹波|阶跃负载)"),
+    ("topology_scheme", r"(拓扑方案|拓扑架构|光伏电源系统|功率通道|母线全调节|S3R|分流调节|放电调节)"),
+    ("solar_array", r"(太阳电池翼|太阳电池阵|太阳翼|对日定向|展开|收拢|阵面面积|三结砷化镓)"),
+    ("battery_energy_storage", r"(蓄电池|储能电池|锂离子|DOD|放电深度|循环寿命|深充放|恒流|恒压)"),
+    ("control_equipment", r"(控制设备|电源管理器|分流调节器|充放电调节器|母线滤波器|驱动控制器|配电系统)"),
+    ("reliability_maintenance", r"(可靠性|安全性|维修性|可测试性|在轨维修|寿命|故障|FMEA)"),
+    ("mechanical_constraints", r"(重量|基频|共振|剩磁矩|磁干扰|外形尺寸|姿态控制|对接)"),
+    ("document_deliverables", r"(研试文件|设计文件|设计报告|任务书|说明书|分析报告|文件名称)"),
+]
+
+SYSTEM_SECTION_LABELS = {
+    "mission_function": "任务与功能",
+    "orbit_environment": "轨道与环境边界",
+    "electrical_indicators": "主要电气指标",
+    "topology_scheme": "电源系统拓扑方案",
+    "solar_array": "太阳电池翼与发电单元",
+    "battery_energy_storage": "蓄电池与储能单元",
+    "control_equipment": "控制设备与功率调节",
+    "reliability_maintenance": "可靠性、安全性与在轨维修",
+    "mechanical_constraints": "机械、磁与重量约束",
+    "document_deliverables": "研试文件与设计交付物",
+    "unclassified": "未归类条目",
+}
+
+TOPOLOGY_FEATURES = {
+    "power_source": (r"(光伏电源系统|太阳电池翼|太阳电池阵|太阳翼)", "光伏电源系统 / 太阳电池翼发电"),
+    "distribution_architecture": (r"(多功率通道|两个功率通道|功率通道相对独立|独立母线)", "多功率通道、通道相对独立"),
+    "primary_bus": (r"(一次母线全调节|母线全调节|全调节方式|母线电压稳定)", "一次母线全调节"),
+    "sunlight_control": (r"(S3R|顺序开关分流调节|分流调节)", "光照区 S3R 分流调节"),
+    "eclipse_control": (r"(放电调节采用升压|升压控制调节|阴影区)", "阴影区储能电池升压放电调节"),
+    "battery_charging": (r"(恒流转恒压|恒流|恒压充电)", "锂离子蓄电池恒流转恒压充电"),
+    "solar_tracking": (r"(双自由度对日定向|对日定向系统|实时跟踪太阳)", "双自由度对日定向"),
+}
+
 TOPOLOGY_PATTERNS = {
     "buck_converter": r"\b(buck|step[-\s]?down|降压)\b",
     "boost_converter": r"\b(boost|step[-\s]?up|升压)\b",
@@ -35,6 +72,13 @@ TOPOLOGY_PATTERNS = {
     "llc_resonant": r"\b(LLC|resonant converter|谐振)\b",
     "pfc": r"\b(PFC|power factor correction|功率因数校正)\b",
     "ldo": r"\b(LDO|low dropout|低压差)\b",
+    "photovoltaic_power_system": r"(光伏电源系统|太阳电池翼|太阳电池阵|太阳翼)",
+    "regulated_primary_bus": r"(一次母线全调节|母线全调节|全调节方式|母线电压稳定)",
+    "s3r_shunt_regulator": r"(S3R|Sequential Switching Shunt Regulator|顺序开关分流调节|分流调节)",
+    "boost_discharge_regulator": r"(放电调节采用升压|升压控制调节|放电调节)",
+    "cc_cv_charging": r"(恒流转恒压|恒压充电|充电控制模式)",
+    "multi_channel_power": r"(多功率通道|功率通道|多机组配置|独立母线)",
+    "dual_axis_solar_tracking": r"(双自由度对日定向|对日定向系统|太阳翼实时跟踪)",
 }
 
 COMPONENT_PATTERNS = {
@@ -48,6 +92,14 @@ COMPONENT_PATTERNS = {
     "current_sense": r"\b(current sense|sense resistor|电流检测|采样电阻)\b",
     "gate_driver": r"\b(gate driver|driver|栅极驱动|驱动器)\b",
     "snubber": r"\b(snubber|RC clamp|RCD clamp|吸收|钳位)\b",
+    "solar_array": r"(太阳电池翼|太阳电池阵|太阳翼|太阳电池片)",
+    "battery_pack": r"(蓄电池组|储能电池|锂离子蓄电池|电池组)",
+    "shunt_regulator": r"(分流调节器|分流调节|S3R)",
+    "charge_discharge_regulator": r"(充放电调节器|充电调节|放电调节)",
+    "bus_filter": r"(母线滤波器|滤波器)",
+    "power_management_unit": r"(电源管理器|配电系统|功率调配)",
+    "solar_drive_controller": r"(驱动控制器|驱动机构|对日定向装置)",
+    "pyro_bus": r"(火工品母线|火工品)",
 }
 
 RULE_CATEGORIES = {
@@ -57,6 +109,16 @@ RULE_CATEGORIES = {
     "protection": r"\b(OCP|OVP|UVLO|short circuit|soft[-\s]?start|current limit|保护|限流|短路|软启动)\b",
     "component_selection": r"\b(select|selection|choose|rating|saturation|ESR|ripple current|选型|额定|饱和|纹波电流)\b",
     "troubleshooting": r"\b(failure|unstable|oscillation|ringing|overshoot|debug|troubleshoot|振荡|过冲|调试|故障)\b",
+    "system_topology": r"(拓扑|架构|功率通道|机组|独立母线|配电系统|全调节|分流调节|放电调节)",
+    "bus_regulation": r"(母线电压|一次母线|火工品母线|电压控制|稳定在|电压扰动|恢复时间)",
+    "power_capacity": r"(输出功率|功耗|供电需求|发电功率|功率密度|比能量|能量平衡)",
+    "orbit_environment": r"(轨道|入轨高度|运行轨道|轨道周期|光照|阴影|地影|受晒因子|太阳高度角)",
+    "solar_array": r"(太阳电池翼|太阳电池阵|太阳翼|对日定向|展开|收拢|阵面面积|三结砷化镓)",
+    "energy_storage": r"(蓄电池|储能电池|DOD|放电深度|循环寿命|深充放|恒流|恒压)",
+    "power_quality": r"(母线品质|纹波|峰峰值|阶跃负载|抗扰|浪涌|跃变)",
+    "reliability_maintenance": r"(可靠性|安全性|寿命|长寿命|在轨维修|故障|FMEA|可维修性|可测试性)",
+    "mechanical_constraint": r"(基频|共振|姿态控制|对接|剩磁矩|磁干扰|外形尺寸|重量)",
+    "document_requirement": r"(研试文件|设计文件|设计报告|任务书|技术说明书|使用说明书|分析报告)",
 }
 
 PARAM_ALIASES = {
@@ -68,11 +130,24 @@ PARAM_ALIASES = {
     "output_ripple": ["ripple voltage", "output ripple", "纹波"],
     "inductance": ["inductance", "inductor value", "电感量"],
     "capacitance": ["capacitance", "capacitor value", "电容量"],
-    "power": ["power", "output power", "功率"],
+    "power": ["power", "output power", "功率", "输出功率", "功耗"],
+    "bus_voltage": ["母线电压", "一次母线", "火工品母线"],
+    "orbit_period": ["轨道周期", "周期"],
+    "orbit_altitude": ["入轨高度", "运行轨道高度", "轨道高度"],
+    "sunlight_duration": ["阳照区", "光照时间", "最短阳照区"],
+    "eclipse_duration": ["阴影区", "最长阴影区"],
+    "depth_of_discharge": ["DOD", "放电深度"],
+    "ripple_voltage": ["纹波", "峰峰值", "p-p"],
+    "recovery_time": ["恢复时间"],
+    "surge_current": ["浪涌电流", "脉冲电流"],
+    "cycle_life": ["循环寿命", "寿命"],
+    "frequency": ["基频"],
+    "area": ["阵面面积"],
+    "efficiency": ["efficiency", "效率", "发电效率"],
 }
 
-UNIT_PATTERN = r"(V|A|W|kW|mW|Hz|kHz|MHz|uH|µH|mH|nF|uF|µF|mF|pF|mΩ|mohm|ohm|Ω|%|°C|C)"
-VALUE_PATTERN = r"[-+]?\d+(?:\.\d+)?(?:\s?[-~to]+\s?[-+]?\d+(?:\.\d+)?)?"
+UNIT_PATTERN = r"(V/ms|A/s|mV|V|A|W|kW|mW|Hz|kHz|MHz|uH|µH|mH|nF|uF|µF|mF|pF|mΩ|mohm|ohm|Ω|%|°C|C|km|m2|m²|s|ms|min|周次|次|年|Am²)"
+VALUE_PATTERN = r"(?:[≥≤<>±]\s*)?[-+]?\d+(?:\.\d+)?(?:\s?(?:-|~|～|至|to)\s?(?:[≥≤<>±]\s*)?[-+]?\d+(?:\.\d+)?)?"
 
 
 @dataclass
@@ -108,7 +183,7 @@ def read_docx(data: bytes) -> tuple[str, list[str]]:
         chunks = [paragraph.text for paragraph in doc.paragraphs if paragraph.text.strip()]
         for table in doc.tables:
             for row in table.rows:
-                cells = [cell.text.strip() for cell in row.cells if cell.text.strip()]
+                cells = [normalize_space(cell.text.replace("\n", " ")) for cell in row.cells if cell.text.strip()]
                 if cells:
                     chunks.append(" | ".join(cells))
         text = normalize_space("\n".join(chunks))
@@ -159,6 +234,59 @@ def split_sentences(text: str) -> list[str]:
     return [item.strip(" -•\t") for item in raw if len(item.strip()) > 12]
 
 
+def split_table_rows(text: str) -> list[list[str]]:
+    rows: list[list[str]] = []
+    for line in text.splitlines():
+        if "|" not in line:
+            continue
+        cells = [normalize_space(cell) for cell in line.split("|")]
+        cells = [cell for cell in cells if cell and cell not in {"-", "—"}]
+        if len(cells) >= 2:
+            rows.append(cells)
+    return rows
+
+
+def is_header_row(cells: list[str]) -> bool:
+    joined = "".join(cells)
+    header_tokens = {
+        "功能分类功能描述关键配置/要求",
+        "参数项指标数值/描述备注",
+        "指标类别具体参数要求工况/约束条件",
+        "特性维度指标要求设计意义",
+        "序号类别文件名称文件类型",
+        "序号类别项目类别备注",
+        "项目指标详情",
+    }
+    return joined in header_tokens or all(not re.search(r"\d|≥|≤|V|W|Hz|DOD|FMEA", cell, flags=re.IGNORECASE) for cell in cells[1:])
+
+
+def document_blocks(text: str) -> list[str]:
+    blocks = []
+    for line in text.splitlines():
+        item = normalize_space(line)
+        if len(item) >= 2:
+            blocks.append(item)
+    if blocks:
+        return blocks
+    return split_sentences(text)
+
+
+def classify_system_section(text: str) -> str:
+    for section, pattern in SYSTEM_SECTION_RULES:
+        if re.search(pattern, text, flags=re.IGNORECASE):
+            return section
+    return "unclassified"
+
+
+def parameter_name_from_label(label: str) -> str:
+    label_norm = label.lower()
+    for canonical, aliases in PARAM_ALIASES.items():
+        if any(alias.lower() in label_norm for alias in aliases):
+            return canonical
+    cleaned = re.sub(r"[^\w\u4e00-\u9fff]+", "_", label.strip().lower()).strip("_")
+    return cleaned[:48] or "parameter"
+
+
 def source_for_text(pages: list[str], needle: str) -> dict[str, Any]:
     needle_norm = normalize_space(needle)
     for index, page in enumerate(pages, start=1):
@@ -170,6 +298,204 @@ def source_for_text(pages: list[str], needle: str) -> dict[str, Any]:
 def confidence_from_hits(*hits: bool) -> float:
     base = 0.52 + sum(0.11 for hit in hits if hit)
     return round(min(base, 0.93), 2)
+
+
+def clean_heading(text: str) -> str:
+    text = normalize_space(text)
+    text = re.sub(r"^[一二三四五六七八九十]+[、.．]\s*", "", text)
+    text = re.sub(r"^\d+[、.．]\s*", "", text)
+    return text
+
+
+def make_source(doc: ParsedDocument, text: str) -> dict[str, Any]:
+    return source_for_text(doc.pages, text)
+
+
+def row_to_metric(cells: list[str], doc: ParsedDocument) -> dict[str, Any] | None:
+    if is_header_row(cells):
+        return None
+    label = clean_heading(cells[0])
+    value = "；".join(cells[1:]).strip()
+    if not label or not value:
+        return None
+    section = classify_system_section(" | ".join(cells))
+    units = sorted(set(re.findall(UNIT_PATTERN, value, flags=re.IGNORECASE)))
+    numeric_values = re.findall(rf"{VALUE_PATTERN}\s*(?:{UNIT_PATTERN})?", value, flags=re.IGNORECASE)
+    return {
+        "name": label,
+        "section": section,
+        "value": value,
+        "units": units[:6],
+        "has_numeric_value": bool(numeric_values),
+        "source": make_source(doc, " | ".join(cells)),
+    }
+
+
+def extract_system_sections(doc: ParsedDocument) -> dict[str, list[dict[str, Any]]]:
+    sections: dict[str, list[dict[str, Any]]] = {key: [] for key, _ in SYSTEM_SECTION_RULES}
+    sections["unclassified"] = []
+    seen: set[str] = set()
+    for cells in split_table_rows(doc.text):
+        if is_header_row(cells):
+            continue
+        row_text = " | ".join(cells)
+        section = classify_system_section(row_text)
+        key = re.sub(r"\W+", "", row_text.lower())[:140]
+        if key in seen:
+            continue
+        seen.add(key)
+        sections.setdefault(section, []).append(
+            {
+                "kind": "table_row",
+                "title": clean_heading(cells[0]),
+                "content": "；".join(cells[1:]) if len(cells) > 1 else row_text,
+                "cells": cells,
+                "source": make_source(doc, row_text),
+            }
+        )
+    for block in document_blocks(doc.text):
+        if "|" in block or len(block) < 18:
+            continue
+        section = classify_system_section(block)
+        if section == "unclassified":
+            continue
+        key = re.sub(r"\W+", "", block.lower())[:140]
+        if key in seen:
+            continue
+        seen.add(key)
+        sections.setdefault(section, []).append(
+            {
+                "kind": "paragraph",
+                "title": clean_heading(block[:34]),
+                "content": block,
+                "cells": [],
+                "source": make_source(doc, block),
+            }
+        )
+    return {section: items for section, items in sections.items() if items}
+
+
+def extract_structured_metrics(doc: ParsedDocument) -> list[dict[str, Any]]:
+    metrics: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for cells in split_table_rows(doc.text):
+        metric = row_to_metric(cells, doc)
+        if not metric:
+            continue
+        if not metric["has_numeric_value"] and metric["section"] not in {"document_deliverables", "mission_function"}:
+            continue
+        key = f"{metric['section']}::{metric['name']}::{metric['value']}"
+        if key in seen:
+            continue
+        seen.add(key)
+        metrics.append(metric)
+    return metrics[:120]
+
+
+def extract_topology_scheme(doc: ParsedDocument) -> dict[str, Any]:
+    features = []
+    for feature_id, (pattern, label) in TOPOLOGY_FEATURES.items():
+        match = re.search(pattern, doc.text, flags=re.IGNORECASE)
+        if not match:
+            continue
+        start = max(0, match.start() - 140)
+        end = min(len(doc.text), match.end() + 180)
+        snippet = normalize_space(doc.text[start:end])
+        features.append(
+            {
+                "id": feature_id,
+                "label": label,
+                "evidence": snippet,
+                "source": make_source(doc, snippet),
+            }
+        )
+    return {
+        "architecture": " / ".join(feature["label"] for feature in features[:4]) or "未识别",
+        "features": features,
+        "confidence": confidence_from_hits(bool(features), len(features) >= 3, len(features) >= 5),
+    }
+
+
+def extract_design_constraints(doc: ParsedDocument, metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    constraints = []
+    for metric in metrics:
+        text = f"{metric['name']} {metric['value']}"
+        if not re.search(r"(≥|≤|不小于|不大于|范围|约束|要求|稳定|恢复|寿命|满足|支持|保障)", text):
+            continue
+        constraints.append(
+            {
+                "category": metric["section"],
+                "name": metric["name"],
+                "requirement": metric["value"],
+                "rationale": infer_constraint_rationale(metric["section"], text),
+                "source": metric["source"],
+            }
+        )
+    return constraints[:80]
+
+
+def infer_constraint_rationale(section: str, text: str) -> str:
+    if section == "orbit_environment":
+        return "作为发电、储能容量和热/光照边界的输入条件。"
+    if section == "electrical_indicators":
+        return "约束母线供电能力、电能质量和瞬态响应。"
+    if section == "solar_array":
+        return "约束太阳翼发电能力、展开机构和姿态跟踪能力。"
+    if section == "battery_energy_storage":
+        return "约束储能容量、放电深度和寿命裕度。"
+    if section == "reliability_maintenance":
+        return "约束长寿命任务、故障处理和在轨维护能力。"
+    if section == "mechanical_constraints":
+        return "约束结构动力学、磁特性和系统重量。"
+    if "母线" in text:
+        return "约束一次母线和特殊负载母线的稳定供电。"
+    return "从原文指标表抽取的设计边界。"
+
+
+def extract_deliverables(doc: ParsedDocument) -> list[dict[str, Any]]:
+    deliverables = []
+    for cells in split_table_rows(doc.text):
+        row_text = " | ".join(cells)
+        if not re.search(RULE_CATEGORIES["document_requirement"], row_text):
+            continue
+        file_name = cells[1] if len(cells) > 1 else cells[0]
+        deliverables.append(
+            {
+                "category": cells[0],
+                "name": file_name,
+                "type": cells[2] if len(cells) > 2 else "文件",
+                "source": make_source(doc, row_text),
+            }
+        )
+    return deliverables[:80]
+
+
+def build_power_system_model(doc: ParsedDocument) -> dict[str, Any]:
+    sections = extract_system_sections(doc)
+    metrics = extract_structured_metrics(doc)
+    topology = extract_topology_scheme(doc)
+    constraints = extract_design_constraints(doc, metrics)
+    deliverables = extract_deliverables(doc)
+    section_summary = []
+    for section, items in sections.items():
+        section_summary.append(
+            {
+                "id": section,
+                "label": SYSTEM_SECTION_LABELS.get(section, section),
+                "items": len(items),
+                "preview": [item["content"][:120] for item in items[:3]],
+            }
+        )
+    return {
+        "schema": "aerospace_power_system.v1",
+        "extraction_mode": "schema_driven_rule_v2",
+        "sections": sections,
+        "section_summary": section_summary,
+        "topology_scheme": topology,
+        "metrics": metrics,
+        "constraints": constraints,
+        "deliverables": deliverables,
+    }
 
 
 def extract_topologies(doc: ParsedDocument) -> list[dict[str, Any]]:
@@ -198,6 +524,30 @@ def extract_parameters(doc: ParsedDocument) -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
     seen: set[tuple[str, str, str]] = set()
     text = doc.text
+    for cells in split_table_rows(text):
+        label = cells[0]
+        value_text = " ".join(cells[1:])
+        if not re.search(r"\d", value_text):
+            continue
+        for match in re.finditer(rf"(?P<value>{VALUE_PATTERN})\s*(?P<unit>{UNIT_PATTERN})", value_text, flags=re.IGNORECASE):
+            canonical = parameter_name_from_label(label)
+            value = re.sub(r"\s+", "", match.group("value"))
+            unit = match.group("unit")
+            key = (canonical, value, unit)
+            if key in seen:
+                continue
+            seen.add(key)
+            row_text = " | ".join(cells)
+            results.append(
+                {
+                    "name": canonical,
+                    "raw_label": label,
+                    "value": value,
+                    "unit": unit,
+                    "confidence": confidence_from_hits(True, "|" in row_text),
+                    "source": source_for_text(doc.pages, row_text),
+                }
+            )
     for canonical, aliases in PARAM_ALIASES.items():
         alias_pattern = "|".join(re.escape(alias) for alias in aliases)
         patterns = [
@@ -288,9 +638,32 @@ def extract_components(doc: ParsedDocument) -> list[dict[str, Any]]:
 def extract_rules(doc: ParsedDocument) -> list[dict[str, Any]]:
     rules = []
     imperative = re.compile(
-        r"\b(should|must|keep|place|connect|route|avoid|ensure|use|select|choose|recommend|注意|必须|应|应该|避免|保持|放置|选择)\b",
+        r"\b(should|must|keep|place|connect|route|avoid|ensure|use|select|choose|recommend|注意|必须|应|应该|避免|保持|放置|选择|采用|配置|实现|维持|保障|支持|满足|需|要求)\b",
         re.IGNORECASE,
     )
+    for cells in split_table_rows(doc.text):
+        row_text = " | ".join(cells)
+        matched_categories = [
+            category
+            for category, pattern in RULE_CATEGORIES.items()
+            if re.search(pattern, row_text, flags=re.IGNORECASE)
+        ]
+        if not matched_categories:
+            continue
+        severity = (
+            "high"
+            if any(category in matched_categories for category in ["bus_regulation", "power_quality", "protection", "reliability_maintenance"])
+            else "medium"
+        )
+        rules.append(
+            {
+                "category": matched_categories[0],
+                "rule": row_text[:420],
+                "severity": severity,
+                "confidence": confidence_from_hits(True, len(cells) > 2),
+                "source": source_for_text(doc.pages, row_text),
+            }
+        )
     for sentence in split_sentences(doc.text):
         matched_categories = [
             category
@@ -302,7 +675,11 @@ def extract_rules(doc: ParsedDocument) -> list[dict[str, Any]]:
         has_action = bool(imperative.search(sentence))
         if not has_action and len(sentence) > 180:
             continue
-        severity = "high" if any(category in matched_categories for category in ["layout", "emi", "protection"]) else "medium"
+        severity = (
+            "high"
+            if any(category in matched_categories for category in ["layout", "emi", "protection", "bus_regulation", "power_quality", "reliability_maintenance"])
+            else "medium"
+        )
         rules.append(
             {
                 "category": matched_categories[0],
@@ -342,6 +719,7 @@ def extract_knowledge(doc: ParsedDocument) -> dict[str, Any]:
     formulas = extract_formulas(doc)
     components = extract_components(doc)
     rules = extract_rules(doc)
+    power_system = build_power_system_model(doc)
     return {
         "schema_version": SCHEMA_VERSION,
         "generated_at": datetime.now().isoformat(timespec="seconds"),
@@ -357,6 +735,7 @@ def extract_knowledge(doc: ParsedDocument) -> dict[str, Any]:
         "formulas": formulas,
         "components": components,
         "design_rules": rules,
+        "power_system": power_system,
     }
 
 
@@ -414,14 +793,14 @@ def render_empty_state() -> None:
         <div class="empty-workbench">
           <div>
             <span class="system-kicker">Ready for extraction</span>
-            <h2>Drop in a power design document.</h2>
-            <p>PowerDoc-KB will parse the file locally, then organize engineering knowledge into traceable cards and exportable JSON.</p>
+            <h2>Drop in an aerospace power document.</h2>
+            <p>PowerDoc-KB will turn system-level design text into topology, metrics, constraints, deliverables, and traceable JSON.</p>
           </div>
           <div class="empty-grid">
             <div><strong>1</strong><span>Upload PDF or DOCX</span></div>
-            <div><strong>2</strong><span>Extract parameters, formulas, rules</span></div>
-            <div><strong>3</strong><span>Review source snippets</span></div>
-            <div><strong>4</strong><span>Download JSON</span></div>
+            <div><strong>2</strong><span>Build aerospace power schema</span></div>
+            <div><strong>3</strong><span>Review system sections</span></div>
+            <div><strong>4</strong><span>Export knowledge JSON</span></div>
           </div>
         </div>
         """,
@@ -1311,15 +1690,37 @@ def inject_css() -> None:
 
 def render_overview(payload: dict[str, Any]) -> None:
     summary = payload["summary"]
+    power_system = payload.get("power_system", {})
     cols = st.columns(4)
     with cols[0]:
-        render_metric("主拓扑", summary["primary_topology"] or "未识别")
+        render_metric("系统模型", power_system.get("schema", "未生成"))
     with cols[1]:
-        render_metric("参数", len(payload["parameters"]))
+        render_metric("结构化指标", len(power_system.get("metrics", [])))
     with cols[2]:
-        render_metric("公式", len(payload["formulas"]))
+        render_metric("设计约束", len(power_system.get("constraints", [])))
     with cols[3]:
-        render_metric("设计规则", len(payload["design_rules"]))
+        render_metric("交付文件", len(power_system.get("deliverables", [])))
+
+    topology = power_system.get("topology_scheme", {})
+    section_label("系统拓扑方案", "按航天电源系统语义抽取的架构，不再只是关键词命中。")
+    card(
+        "Architecture",
+        f"{escape(topology.get('architecture', '未识别'))}<br>置信度：{topology.get('confidence', 0)}",
+    )
+    feature_rows = [
+        [item["id"], item["label"], item["source"].get("page"), item["evidence"][:120]]
+        for item in topology.get("features", [])
+    ]
+    if feature_rows:
+        render_dark_table(["feature", "label", "page", "evidence"], feature_rows)
+
+    section_label("系统分区", "仿照样例把原文组织成任务、轨道、电气指标、拓扑、太阳翼、蓄电池、控制设备、可靠性等模块。")
+    summary_rows = [
+        [item["label"], item["items"], " / ".join(item["preview"])]
+        for item in power_system.get("section_summary", [])
+    ]
+    if summary_rows:
+        render_dark_table(["section", "items", "preview"], summary_rows)
 
     section_label("关键词", "从文档正文中提取的高频技术词，用来快速判断文档主题。")
     tags = "".join(f'<span class="tag">{escape(keyword)}</span>' for keyword in summary["keyword_cloud"])
@@ -1334,6 +1735,68 @@ def render_overview(payload: dict[str, Any]) -> None:
             f"出现次数：{item['mentions']}<br>置信度：{item['confidence']}",
             render_source(item["source"]),
         )
+
+
+def render_system_model(power_system: dict[str, Any]) -> None:
+    section_label("航天电源系统模型", "这是面向知识库入库的主结果：系统级结构、指标、约束和交付物。")
+    top_cols = st.columns(4)
+    with top_cols[0]:
+        render_metric("Schema", power_system.get("schema", "n/a"))
+    with top_cols[1]:
+        render_metric("Sections", len(power_system.get("sections", {})))
+    with top_cols[2]:
+        render_metric("Metrics", len(power_system.get("metrics", [])))
+    with top_cols[3]:
+        render_metric("Constraints", len(power_system.get("constraints", [])))
+
+    topology = power_system.get("topology_scheme", {})
+    section_label("拓扑方案", "系统级供电架构、调节方式和关键功能链路。")
+    card("拓扑摘要", escape(topology.get("architecture", "未识别")))
+    for feature in topology.get("features", []):
+        card(feature["label"], escape(feature["evidence"]), render_source(feature["source"]))
+
+    section_label("结构化指标", "从表格和段落中归并出的设计指标，保留原文依据。")
+    metric_rows = [
+        [
+            SYSTEM_SECTION_LABELS.get(item["section"], item["section"]),
+            item["name"],
+            item["value"],
+            ", ".join(item["units"]),
+            item["source"].get("page"),
+        ]
+        for item in power_system.get("metrics", [])
+    ]
+    if metric_rows:
+        render_dark_table(["section", "name", "value", "unit", "page"], metric_rows)
+    else:
+        st.info("没有识别到结构化指标。")
+
+    section_label("设计约束", "把指标中带有范围、上下限、稳定性、寿命、恢复时间等语义的条目提炼为约束。")
+    for item in power_system.get("constraints", [])[:50]:
+        body = f"<strong>{escape(item['requirement'])}</strong><br>{escape(item['rationale'])}"
+        card(f"{SYSTEM_SECTION_LABELS.get(item['category'], item['category'])} / {item['name']}", body, render_source(item["source"]))
+
+    deliverables = power_system.get("deliverables", [])
+    if deliverables:
+        section_label("研试文件与交付物", "适合直接进入知识库的文档清单。")
+        render_dark_table(
+            ["category", "name", "type", "page"],
+            [[item["category"], item["name"], item["type"], item["source"].get("page")] for item in deliverables],
+        )
+
+
+def render_section_browser(power_system: dict[str, Any]) -> None:
+    sections = power_system.get("sections", {})
+    if not sections:
+        st.info("没有可浏览的系统分区。")
+        return
+    labels = {SYSTEM_SECTION_LABELS.get(section, section): section for section in sections}
+    selected_label = st.segmented_control("系统分区", list(labels), default=list(labels)[0])
+    section = labels[selected_label]
+    for item in sections.get(section, []):
+        title = item.get("title") or selected_label
+        body = escape(item.get("content") or "")
+        card(title, body, render_source(item["source"]))
 
 
 def render_parameters(parameters: list[dict[str, Any]]) -> None:
@@ -1442,16 +1905,16 @@ def main() -> None:
         st.header("抽取范围")
         enabled_views = st.multiselect(
             "显示模块",
-            ["Visual Parse", "Overview", "Parameters", "Formulas", "Components", "Design Rules", "JSON"],
-            default=["Visual Parse", "Overview", "Parameters", "Formulas", "Components", "Design Rules", "JSON"],
+            ["System Model", "Section Browser", "Visual Parse", "Overview", "Parameters", "Formulas", "Components", "Design Rules", "JSON"],
+            default=["System Model", "Section Browser", "Visual Parse", "Overview", "JSON"],
         )
 
     if not uploaded_file:
         render_empty_state()
         demo = {
-            "document": "Buck converter design guide",
-            "output": ["parameters", "formulas", "component selection", "layout rules", "JSON"],
-            "next_stage": "Add LLM extractor and vector search after schema is stable.",
+            "schema": "aerospace_power_system.v1",
+            "output": ["topology_scheme", "metrics", "constraints", "deliverables", "source_trace"],
+            "extractor": "schema_driven_rule_v2",
         }
         section_label("JSON 输出预览")
         code_panel(json.dumps(demo, ensure_ascii=False, indent=2), max_height=360)
@@ -1478,7 +1941,11 @@ def main() -> None:
     tabs = st.tabs(enabled_views)
     for tab, view in zip(tabs, enabled_views):
         with tab:
-            if view == "Visual Parse":
+            if view == "System Model":
+                render_system_model(payload["power_system"])
+            elif view == "Section Browser":
+                render_section_browser(payload["power_system"])
+            elif view == "Visual Parse":
                 render_parse_visualization(payload, doc)
             elif view == "Overview":
                 render_overview(payload)

@@ -29,11 +29,23 @@ Then open the local Streamlit URL shown in the terminal.
 4. Set the main file path to `app.py`.
 5. Deploy.
 
+If the app is already connected to this repository in Streamlit Cloud, pushing to `main` will usually trigger an automatic redeploy.
+
 ## Local Tests
 
 ```bash
 python3 tests/run_extractor_tests.py
 ```
+
+## Local Skill
+
+This workspace also includes a local Codex skill at:
+
+```text
+.agents/skills/powerdoc-kb-extractor/SKILL.md
+```
+
+It documents the preferred extraction workflow for aerospace power-system knowledge-base building, including table-first parsing, topology relation extraction, schema grouping, and cleaner JSON output for the web UI.
 
 ## Notes
 
